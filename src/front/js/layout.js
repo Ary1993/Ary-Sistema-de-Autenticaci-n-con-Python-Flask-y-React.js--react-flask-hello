@@ -8,8 +8,11 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { Navbar } from "./component/navbar.js";
 import { Footer } from "./component/footer";
+
+import { Login } from "./pages/Login.jsx";
+import { Dashboard } from "./pages/Dashboard.jsx";
 
 //create your first component
 const Layout = () => {
@@ -26,9 +29,11 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<Dashboard/>}path="/dashboard"/>
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<h1>Not found!</h1>} />
+                        <Route element={<h1>404 - Not found!</h1>} />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

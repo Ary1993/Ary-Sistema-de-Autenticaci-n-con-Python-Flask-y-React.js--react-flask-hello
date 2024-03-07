@@ -35,16 +35,14 @@ def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     # Reemplazar por lógica consultando la DB.
-    # Debo buscar en la base de datos un usuario cuyo email y password sea igual de lo que reciba en el body, ademas debe tener is_active = true 
-    
-    if email != "test@test" or password != "test":
-        response_body['message'] = "Bad username or password"
-        return response_body, 401      
-
-    access_token = create_access_token(identity=user)  # Lo que el back quiere agregar en el token
+    user = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active == True)).scalar()
+    if not user: 
+        response_body["message"] = "Email pasword incorrecto"
+        return response_body, 401
+    access_token = create_access_token(identity=user.serialize())  # Lo que el back quiere agregar en el token
     response_body['access_token'] = access_token
     response_body['message'] = "Usuario logeado con éxito"
-    response_body['results'] = {"user": user, "profile": profile}
+    response_body['results'] = user.serialize()
     return response_body, 200
 
 # Protect a route with jwt_required, which will kick out requests
